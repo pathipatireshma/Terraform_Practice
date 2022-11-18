@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 resource "aws_vpc" "my_test_vpc" {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = "10.0.0.0/24"
     instance_tenancy = "default"
     tags = {
       "Name" = "my_test_vpc"
@@ -10,10 +10,46 @@ resource "aws_vpc" "my_test_vpc" {
 }
 resource "aws_subnet" "subnet_a" {
     vpc_id = aws_vpc.my_test_vpc.id
-    cidr_block = "10.0.0.0/24"
-  
+    cidr_block = "10.0.0.0/26"
+    tags = {
+      "Name" = "subnet_a"
+    }
 }
+resource "aws_subnet" "subnet_b" {
+    vpc_id = aws_vpc.my_test_vpc.id
+    cidr_block = "10.0.0.64/26"
+    tags = {
+      "Name" = "subnet_b"
+    }
+}
+
+resource "aws_subnet" "subnet_c" {
+    vpc_id = aws_vpc.my_test_vpc.id
+    cidr_block = "10.0.0.128/26"
+    tags = {
+      "Name" = "subnet_c"
+    }
+}
+
+resource "aws_subnet" "subnet_d" {
+    vpc_id = aws_vpc.my_test_vpc.id
+    cidr_block = "10.0.0.192/26"
+    tags = {
+        "Name" = "subnet_d"
+    }
+}
+
+resource "aws_internet_gateway" "my_Igway" {
+    vpc_id = aws_vpc.my_test_vpc.id
+    tags = {
+        Name = "my_Igway"
+    }
+}
+
 output "vpc_id" {
-    value = aws_vpc.my_test_vpc.id 
-  
+    value = aws_vpc.my_test_vpc.id
+
+}
+output "aws_internet_gateway" {
+    value = aws_internet_gateway.my_Igway.id
 }
