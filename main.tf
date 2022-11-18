@@ -45,6 +45,24 @@ resource "aws_internet_gateway" "my_Igway" {
         Name = "my_Igway"
     }
 }
+resource "aws_route_table" "my_test_route" {
+    vpc_id = aws_vpc.my_test_vpc.id
+    route = []
+    tags = {
+        Name = "my_test_route"
+    }
+  
+}
+resource "aws_route_table_association" "a" {
+    subnet_id = aws_subnet.subnet_a.id
+    route_table_id = aws_route_table.my_test_route.id
+  
+}
+resource "aws_route_table_association" "b" {
+    subnet_id = aws_subnet.subnet_b.id
+    route_table_id = aws_route_table.my_test_route.id
+  
+}
 
 output "vpc_id" {
     value = aws_vpc.my_test_vpc.id
