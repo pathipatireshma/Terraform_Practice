@@ -54,12 +54,12 @@ resource "aws_route_table" "my_test_route" {
   
 }
 resource "aws_route_table_association" "a" {
-    subnet_id = aws_subnet.subnet_a.id
+    subnet_id = vars.subnet_1
     route_table_id = aws_route_table.my_test_route.id
   
 }
 resource "aws_route_table_association" "b" {
-    subnet_id = aws_subnet.subnet_b.id
+    subnet_id = var.subnet_2
     route_table_id = aws_route_table.my_test_route.id
   
 }
