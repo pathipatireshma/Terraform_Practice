@@ -64,9 +64,39 @@ resource "aws_route_table_association" "b" {
   
 }
 
+resource "aws_security_group" "my_sg_test" {
+    name = "my_sg_test"
+    description = "allow-all-ports"
+    vpc_id = var.vpc
+
+    ingress {
+        description = "SSH"
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = [aws_vpc.my_test_vpc.cidr_block]
+    }
+
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = -1
+        cidr_blocks = ["0.0.0.0/0."]
+    }
+    tags = {
+      "Name" = "my_sg_test"
+    }
+  
+}
+
 output "vpc_id" {
     value =  var.vpc
 }
 output "aws_internet_gateway" {
     value = aws_internet_gateway.my_Igway.id
+}
+
+output "aws_security_group" {
+    value = aws_security_group.my_sg_test
+  
 }
