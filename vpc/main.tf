@@ -69,13 +69,32 @@ resource "aws_security_group" "my_sg_test" {
     description = "allow-all-ports"
     vpc_id = aws_vpc.my_test_vpc.id
 
-    ingress {
+    ingress = [
+       
+    {
         description = "SSH"
         from_port = 22
         to_port = 22
         protocol = "tcp"
         cidr_blocks = [aws_vpc.my_test_vpc.cidr_block]
+        prefix_list_ids = []
+        ipv6_cidr_blocks = ["::/0"]
+        security_groups = []
+        self = true
+    },
+    {
+        description = "HTTP"
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = [aws_vpc.my_test_vpc.cidr_block]
+        prefix_list_ids = []
+        ipv6_cidr_blocks = ["::/0"]
+        security_groups = []
+        self = true
     }
+    ]
+
 
     egress {
         from_port = 0
@@ -89,14 +108,3 @@ resource "aws_security_group" "my_sg_test" {
   
 }
 
-output "vpc_id" {
-    value =  aws_vpc.my_test_vpc.id
-}
-output "aws_internet_gateway" {
-    value = aws_internet_gateway.my_Igway.id
-}
-
-output "aws_security_group" {
-    value = aws_security_group.my_sg_test
-  
-}
