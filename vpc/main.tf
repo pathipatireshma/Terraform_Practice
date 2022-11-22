@@ -8,35 +8,16 @@ resource "aws_vpc" "my_test_vpc" {
       "Name" = "my_test_vpc"
     }
 }
-resource "aws_subnet" "subnet_a" {
-    vpc_id = aws_vpc.my_test_vpc.id
-    cidr_block = "10.0.0.0/26"
-    tags = {
-      "Name" = "subnet_a"
-    }
-}
-resource "aws_subnet" "subnet_b" {
-    vpc_id = aws_vpc.my_test_vpc.id
-    cidr_block = "10.0.0.64/26"
-    tags = {
-      "Name" = "subnet_b"
-    }
-}
 
-resource "aws_subnet" "subnet_c" {
+resource "aws_subnet" "test_subnet" {
     vpc_id = aws_vpc.my_test_vpc.id
-    cidr_block = "10.0.0.128/26"
+    count = length(var.cidr_list)
+    
+    cidr_block = var.cidr_list[count.index]
     tags = {
-      "Name" = "subnet_c"
+      "Name" = var.subnet_list[count.index]
     }
-}
-
-resource "aws_subnet" "subnet_d" {
-    vpc_id = aws_vpc.my_test_vpc.id
-    cidr_block = "10.0.0.192/26"
-    tags = {
-        "Name" = "subnet_d"
-    }
+  
 }
 
 resource "aws_internet_gateway" "my_Igway" {
@@ -47,22 +28,28 @@ resource "aws_internet_gateway" "my_Igway" {
 }
 resource "aws_route_table" "my_test_route" {
     vpc_id = aws_vpc.my_test_vpc.id
-    route = []
+    route  {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = aws_internet_gateway.my_Igway.id
+    }
     tags = {
         Name = "my_test_route"
     }
   
 }
 resource "aws_route_table_association" "a" {
-    subnet_id = aws_subnet.subnet_a.id
+ 
+    count = length(aws_subnet.test_subnet[*].id)-2
     route_table_id = aws_route_table.my_test_route.id
+    subnet_id = aws_subnet.test_subnet[count.index].id
   
 }
-resource "aws_route_table_association" "b" {
-    subnet_id = aws_subnet.subnet_b.id
-    route_table_id = aws_route_table.my_test_route.id
+# resource "aws_route_table_association" "b" {
   
-}
+#     count = length(aws_subnet.test_subnet[*].id)
+#     route_table_id = aws_route_table.my_test_route.id
+#     subnet_id = aws_subnet.test_subnet[count.index].id
+# }
 
 resource "aws_security_group" "my_sg_test" {
     name = "my_sg_test"
