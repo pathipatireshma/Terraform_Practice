@@ -3,7 +3,7 @@ data "aws_ami" "amazon" {
 
   filter {
     name = "name"
-    value = ["amzn2-ami-kernel-5.10-hvm-2.0.20221103.3-x86_64-gp2"]
+    values = ["amzn2-ami-kernel-5.10-hvm-2.0.20221103.3-x86_64-gp2"]
   }
   filter {
     name   = "virtualization-type"
@@ -29,7 +29,8 @@ resource "aws_autoscaling_group" "asg_test" {
     max_size = 5
     min_size = 1
     desired_capacity = 1
-    availability_zones = ["us-east-1a"]
+    # availability_zones = ["us-east-1c"]
+    vpc_zone_identifier = [ "subnet-07ec79d828981a1f8" ]
     launch_configuration = aws_launch_configuration.my_confg.name
     health_check_grace_period = 300
     tag {
