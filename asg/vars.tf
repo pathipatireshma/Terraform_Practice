@@ -1,12 +1,7 @@
-# variable "ami_id" {
-#     type = string
-  
-# }
-
-
-
-variable "sg_id" {
-    type = list
+variable "my_vpc" {
+    type = string
   
 }
+
+
 

@@ -1,3 +1,2 @@
+my_vpc = "vpc-0b962b8dfc23fff96"
 
-
-sg_id = ["sg-02784dbc7f03b1ef1"]
