@@ -17,7 +17,7 @@ data "aws_subnet" "subnet_name" {
     }
     filter {
       name = "subnet-id"
-      values = [var.subnet_id]
+      values = var.subnet_id
     }
 
   

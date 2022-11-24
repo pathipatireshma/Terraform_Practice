@@ -10,7 +10,9 @@ resource "aws_lb" "this" {
       
     }
 
-    subnets = [for subnet in data.aws_subnet.subnet_name.id : var.subnet_id]
+    subnets =  var.subnet_id
+    # count = length(var.subnet_id)
+    # subnets = var.subnet_id[count.index]
 }
 
 resource "aws_lb_target_group" "this" {
@@ -25,8 +27,8 @@ resource "aws_lb_target_group" "this" {
 
 resource "aws_lb_listener" "this" {
     load_balancer_arn = aws_lb.this.arn
-    port = "80"
-    protocol = "HTTP"
+    port = var.port
+    protocol = var.protocol
     default_action {
       type = "forward"
       target_group_arn = aws_lb_listener.this.arn

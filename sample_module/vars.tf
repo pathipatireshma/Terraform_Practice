@@ -3,7 +3,7 @@ variable "my_vpc" {
 }
 
 variable "subnet_id" {
-    type = string
+    type = list
 }
 
 variable "port" {
