@@ -1,8 +1,8 @@
 module "test_alb" {
     # source = "sample_module/aws_lb/my_test_lb"
     source = "../"
-    # name = "app-lb"
-   
+    name = "app"
+    lb_type = "application"
     my_vpc = var.my_vpc
     subnet_id =   var.subnet_id
     # count = length(var.subnet_id)
