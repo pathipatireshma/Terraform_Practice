@@ -1,7 +1,8 @@
 resource "aws_lb" "this" {
-    # name = "my-test-lb"
+    # name = format("%s-alb",var.name) 
+    name = format("%s-%s-alb",local.env_name,var.name)
     internal = false
-    load_balancer_type = "application"
+    load_balancer_type = var.lb_type
     enable_deletion_protection = false
     enable_cross_zone_load_balancing = false
     security_groups = [data.aws_security_group.security_id.id]
@@ -16,7 +17,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_target_group" "this" {
-    # name = "my-test-tg"
+    name = format("%s-tg",var.name)
     port = var.port
     protocol = var.protocol
     target_type = var.target
@@ -31,7 +32,7 @@ resource "aws_lb_listener" "this" {
     protocol = var.protocol
     default_action {
       type = "forward"
-      target_group_arn = aws_lb_listener.this.arn
+      target_group_arn = aws_lb_target_group.this.arn
     }
 
   

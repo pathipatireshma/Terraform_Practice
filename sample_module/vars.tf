@@ -17,3 +17,11 @@ variable "protocol" {
 variable "target" {
     type = string
 }
+
+
+variable "name" {
+    type = string
+}
+variable "lb_type" {
+    type = string
+}
